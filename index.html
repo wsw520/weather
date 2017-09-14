@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+	     *{margin: 0;padding: 0;box-sizing: border-box;}
+         body,html{width:100%;height:100%}
+         #tuo{
+		    display: flex;
+		    flex-direction: column;
+		    height: 100%;
+		    background:#ccc;
+		    }
+         header{background: cornflowerblue;width: 100%;height: 3rem;}
+         section{height: 100%;overflow:auto;background: url(img/gz.jpg) no-repeat;background-size: cover;}
+         #np{height: 1.6rem;
+		     border-radius: 0.8rem;
+		     outline: none;
+		     }
+		 button{border-radius: 0.6rem;height: 1.5rem;outline: none;}
+	     #d1{text-align: center;margin-top: 0.6rem;}
+	     #d2{text-align: center;color: #fff;}
+	     .ganmao{border-bottom: 1px dashed red;}
+	</style>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<script src="js/jquery-3.2.1.js"></script>
+</head>
+	<body>
+<div id="tuo">
+  <header>
+	  <div id="d1">
+	  <input type="text" id="np" placeholder="请输入城市名" value="广州">
+	  <button>查询天气</button>
+	  </div>
+  </header>
+  <section>
+      <div id="d2"></div>
+  </section>
+</div>
+	<script>
+    $("button").on("click",function(){
+     $("#d2").html("");
+    var txt=$("#np").val();
+    $.ajax({
+          type: "get",
+          url: "http://wthrcdn.etouch.cn/weather_mini?city="+txt+"",
+          dataType: "jsonp",
+          success: function(data) {
+             console.log(data)
+             console.log(data.data.forecast[0].fengli)
+             var city=data.data.city;
+             for(var i=0;i<data.data.forecast.length;i++){
+             var Data=$("<p>"+data.data.forecast[i].date+"</p>");
+             var fengxiang=$("<p>"+data.data.forecast[i].fengxiang+"</p>");
+             var high=$("<p>"+data.data.forecast[i].high+"</p>");
+             var low=$("<p>"+data.data.forecast[i].low+"</p>");
+             var type=$("<p>"+data.data.forecast[i].type+"</p>");
+             var ganmao=$("<p class='ganmao'>"+data.data.ganmao+"</p>");
+             $("#d2").append(city,Data,fengxiang,high,low,type,ganmao);
+
+             }
+          }
+})
+     $("#np").val("");
+})    
+	</script>
+  </body>
+</html>
